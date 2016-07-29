@@ -13,7 +13,7 @@ function Key(code,which,elem){
     this.actionPress=new KeyActionArray();
     this.actionUp=new KeyActionArray();
     this.toStr=function(){
-        return "[ "+this.code+" => "+this.elem+" ("+this.which+") ]";
+        return "[ `"+this.code+"` => `"+this.elem+"` ("+this.which+") ]";
     };
     this.itsMeC=function(code){
         return (this.code==code) ;
@@ -99,6 +99,9 @@ function KeyAction(action,condition){
 function KeyActionArray(){
     var that = this;
     this.actions=[];
+    this.add=function(keyAction){
+        this.actions.push(keyAction);
+    }
     this.addAction=function(action,condition){
         this.actions.push(new KeyAction(action,condition))
     }
@@ -114,6 +117,41 @@ function KeyActionArray(){
     }
 }
 
+function KeyActionLib(){
+    this.items=[];
+    this.add=function(item){
+        this.items.push(item);
+    }
+    this.addItem=function(ref,action){
+        this.add(new KeyActionLibItem(ref,action));
+    }
+    this.addItemAction=function(ref,action){
+        this.addItem(ref,action);
+    }
+    this.length=function(){
+        return this.items.length;
+    }
+    this.get=function(ref){
+        for(var i=0;i<this.length();i++){
+            if(this.items[i].itsMe(ref)) return this.items[i];
+        }
+    }
+    this.getAction=function(ref){
+        return this.get(ref).action;
+    }
+    this.setAction=function(ref,action){
+        this.getAction(ref).action=action;
+    }
+}
+
+function KeyActionLibItem(ref,action){
+    this.ref=ref;
+    this.action=action;
+    this.itsMe=function(ref){
+        return this.ref==ref;
+    }
+}
+
 /**
  * [KeyboardPeriod OBJET PRINCIPAL DE GESTION DE CLAVIER]
  */
@@ -122,6 +160,7 @@ function KeyboardPeriod(){
 
     this.keya=new KeyArray();
     this.elemEvent=document;
+    this.kal=new KeyActionLib();
     //this.keyme="[";
 
     this.enableEvents=function(){

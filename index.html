@@ -13,6 +13,7 @@
             kb = new KeyboardPeriod();
             kb.setKeymap(keymap);
             kb.keya.displaySelf();
+            kb.keya.getC("Space").actionUp.addAction(function(){console.log("action Added on Space :D")});
         </script>
     </body>
 </html>
