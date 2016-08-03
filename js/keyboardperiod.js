@@ -116,7 +116,10 @@ function KeyActionArray(){
         this.actions.forEach(this.executeOne);
     }
 }
-
+/**
+ * [KeyActionLib Librairie d'action]
+ * @return {KeyActionLib} [the object]
+ */
 function KeyActionLib(){
     this.items=[];
     this.add=function(item){
@@ -140,13 +143,64 @@ function KeyActionLib(){
         return this.get(ref).action;
     }
     this.setAction=function(ref,action){
-        this.getAction(ref).action=action;
+        this.get(ref).action=action;
     }
 }
 
+/**
+ * [KeyActionLibItem description]
+ * @param {string} ref [réference de l'action]
+ * @param {function} action [action a effectuer]
+ * @return {KeyActionLibItem} [the object]
+ */
 function KeyActionLibItem(ref,action){
     this.ref=ref;
     this.action=action;
+    this.itsMe=function(ref){
+        return this.ref==ref;
+    }
+}
+
+/**
+ * [KeyConditionLib Librairie de condition]
+ * @return {KeyConditionLib} [the object]
+ */
+function KeyConditionLib(){
+    this.items=[];
+    this.add=function(item){
+        this.items.push(item);
+    }
+    this.addItem=function(ref,condition){
+        this.add(new KeyConditionLibItem(ref,condition));
+    }
+    this.addItemCondition=function(ref,condition){
+        this.addItem(ref,condition);
+    }
+    this.length=function(){
+        return this.items.length;
+    }
+    this.get=function(ref){
+        for(var i=0;i<this.length();i++){
+            if(this.items[i].itsMe(ref)) return this.items[i];
+        }
+    }
+    this.getCondition=function(ref){
+        return this.get(ref).condition;
+    }
+    this.setCondition=function(ref,condition){
+        this.get(ref).condition=condition;
+    }
+}
+
+/**
+ * [KeyConditionLibItem Condition ]
+ * @param {string} ref [réference de l'action]
+ * @param {function} condition [condition a effectuer]
+ * @return {KeyConditionLibItem} [the object]
+ */
+function KeyConditionLibItem(ref,condition){
+    this.ref=ref;
+    this.condition=condition;
     this.itsMe=function(ref){
         return this.ref==ref;
     }
@@ -161,6 +215,7 @@ function KeyboardPeriod(){
     this.keya=new KeyArray();
     this.elemEvent=document;
     this.kal=new KeyActionLib();
+    this.kcl=new KeyActionLib();
     //this.keyme="[";
 
     this.enableEvents=function(){
@@ -174,14 +229,11 @@ function KeyboardPeriod(){
     }
 
     this.fixFackingKeys=function(){
-        $(document).on("keydown",disableF5);
-        $(document).on("keydown",disableBCKSP)
+        $(document).on("keydown",function(e){e.preventDefault();});
     }
-
-    this.enableEvents();
     this.fixFackingKeys();
+    this.enableEvents();
+
 }
 
 // fixFackingKeys suite
-function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
-function disableBCKSP(e) { if ((e.which || e.keyCode) == 8) e.preventDefault(); };

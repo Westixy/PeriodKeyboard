@@ -1,0 +1,14 @@
+var kcl = new KeyConditionLib();
+kcl.addItem("True",function(){return true;});
+kcl.addItem("False",function(){return false;});
+kcl.addItem("Write",function(){return true;});
+kcl.addItem("Write_None",function(){return true;});
+kcl.addItem("Write_Shift",function(){return true;});
+kcl.addItem("Write_Alt",function(){return true;});
+kcl.addItem("Write_Ctrl",function(){return true;});
+kcl.addItem("Write_ShiftAlt",function(){return true;});
+kcl.addItem("Write_ShiftCtrl",function(){return true;});
+kcl.addItem("Write_AltCtrl",function(){return true;});
+kcl.addItem("Write_ShiftAltCtrl",function(){return true;});
+kcl.addItem("Waiting",function(){return true;});
+kcl.addItem("Booting",function(){return true;});
